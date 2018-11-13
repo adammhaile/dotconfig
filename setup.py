@@ -8,7 +8,7 @@ with open('./requirements.txt') as f:
 
 setup(
     name="pydotconfig",
-    version="0.1",
+    version="0.1.1",
     description="Super simple python module for parsing structured config files with overrides",
     long_description=open('README.md').read(),
     url="https://github.com/adammhaile/dotconfig",
