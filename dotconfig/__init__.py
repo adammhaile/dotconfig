@@ -57,7 +57,13 @@ class Config(object):
                 shutil.copyfile(template_file, self.full_path)
             else:
                 with open(self.full_path, 'w') as f:
-                    yaml.dump({}, f, default_flow_style=False)
+                    if template:
+                        if isinstance(template, str):
+                                f.write(template)
+                        elif isinstance(template, dict):
+                            yaml.dump(template, f, default_flow_style=False)
+                    else:
+                        yaml.dump({}, f, default_flow_style=False)
 
         self._data = defaults
         with open(self.full_path, 'r') as f:
