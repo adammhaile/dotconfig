@@ -6,14 +6,13 @@ import shutil
 VALID_EXT = [
     'yaml',
     'yml',
-    'json',
-    'jsn'
+    'json'
 ]
 
 
 class Config(object):
     def __init__(self, app, name, base_dir='~/.config/',
-                 template_file=None, envvars={},
+                 template_file=None, template=None, envvars={},
                  defaults={}, cli_args={}):
         """
         Automatically load an app config with environment variable and
@@ -23,6 +22,14 @@ class Config(object):
         :param str app: Application name
         :param str name: Name of app sub-config
         :param str base_dir: Base config dir. Defaults to '~/.config/`
+        :param str template_file: Template file to copy to given location if none exists
+        :param str/dict template: YAML/JSON string or dict to write use as template
+        if no config exists.
+        :param dict envvars: Map of environment variables to map to keys. { key: APP_ENV_VAR }
+        These override anything in the config file
+        :param dict defaults: Default values for config keys
+        :param dict cli_args: Config key overrides likely from the app CLI.
+        These override any config file or env var values.
 
         :raises exceptions.IOError: when permissions denied
         """

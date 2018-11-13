@@ -1,0 +1,16 @@
+language: python
+python:
+- '2.7'
+deploy:
+  - provider: pypi
+    skip_cleanup: true
+    user: adammhaile
+    password:
+      secure: 4mEZYEmHQTk7uBboQ+j8x30svigvDsHpXoBVj8MHbIsWAG+3uBnTqeUPNxnDwGhes00qN4jFU6URhfu27/wIRMdughBjiSzVvPdFhUXrXt6R8sAYeP53mvRE2WCVjXYAIjkG9GUeV+drV919XL7R+524GHKwvtbEN/bkNXDCQzGofocJKjaypChhJ7NUUNO2seHQ0Ss2/DL0jt23K4rWPPgrAu/doU4PgpWYoFztkZ4ZL8vo8kY/GYToNO3r8f/X9kyGYV4pXUdyiZFkqCEZOiEzm7BpaeXBvYz6fm9cfWmyI1iXl4+CjDsnnSPNvGQGpwApdZYvy0l00mbMlhavhfSdMJ0nggV/Pnx9AdprMJ+zYtYVYFkGk81xt/JFTnqVHJvMj+PtsaantFULvkZNdX1ubQ5PNQsBaojvWIoVSb/D+Cdouia2TVwOf1DoJXyf5EZCxe9PTHnw+psKxvkxabC+sM2ZszzfYlbMiIgKDNmBRuJRikANRdSJrWBZBsDOe854Wvazs+tUjeDSEx+8ipNw4VoG+xobPn3JwgD1pO02kk1B6A3YOiWD/foVCvpaN75+g67W7RYj5oT3oXrQ5+2y5HRsVTEDi2cwIfn/EpC0FOugoCAOnHeQo8YYk4d0//DmHLWaNOzGmELz3Xuov2IkihaJWr+6uifyLyH/+mM=
+    on:
+      repo: adammhaile/dotconfig
+      python: 2.7
+      tags: true
+
+script:
+  - python setup.py install
