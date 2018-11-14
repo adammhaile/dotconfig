@@ -76,7 +76,7 @@ class Config(object):
 
             # finally, override with given cli args
             for k, v in cli_args.iteritems():
-                if k not in self._data or k is not None:
+                if k not in self._data or v is not None:
                     self._data[k] = v
 
     def __getitem__(self, item):
