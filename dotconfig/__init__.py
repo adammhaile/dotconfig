@@ -13,7 +13,7 @@ VALID_EXT = [
 class Config(object):
     def __init__(self, app, name, base_dir='~/.config/',
                  template_file=None, template=None, envvars={},
-                 defaults={}, cli_args={}):
+                 defaults={}, cli_args={}, path_override=None):
         """
         Automatically load an app config with environment variable and
         default overrides.
@@ -33,7 +33,11 @@ class Config(object):
 
         :raises exceptions.IOError: when permissions denied
         """
-        self.base_dir = os.path.expanduser(os.path.join(base_dir, app))
+
+        if path_override:
+            self.base_dir = os.path.expanduser(path_override)
+        else:
+            self.base_dir = os.path.expanduser(os.path.join(base_dir, app))
 
         if not os.path.isdir(self.base_dir):
             os.makedirs(self.base_dir)
