@@ -63,7 +63,7 @@ class Config(object):
                 with open(self.full_path, 'w') as f:
                     if template:
                         if isinstance(template, str):
-                                f.write(template)
+                            f.write(template)
                         elif isinstance(template, dict):
                             yaml.dump(template, f, default_flow_style=False)
                     else:
@@ -71,7 +71,7 @@ class Config(object):
 
         self._data = defaults
         with open(self.full_path, 'r') as f:
-            data = yaml.load(f)
+            data = yaml.full_load(f)
             self._data.update(data)
             # load envvars if given and override
             for k, v in envvars.iteritems():
