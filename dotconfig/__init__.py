@@ -11,9 +11,10 @@ VALID_EXT = [
 
 
 class Config(object):
-    def __init__(self, app, name, base_dir='~/.config/',
+    def __init__(self, app=None, name=None, base_dir='~/.config/',
                  template_file=None, template=None, envvars={},
-                 defaults={}, cli_args={}, path_override=None):
+                 defaults={}, cli_args={}, path_override=None,
+                 file_override=None):
         """
         Automatically load an app config with environment variable and
         default overrides.
@@ -30,46 +31,54 @@ class Config(object):
         :param dict defaults: Default values for config keys
         :param dict cli_args: Config key overrides likely from the app CLI.
         These override any config file or env var values.
+        :param str path_override: Specify direct path instead of default base dir
+        :param str file_override: Direct path to config file to read
 
         :raises exceptions.IOError: when permissions denied
         """
 
-        if path_override:
-            self.base_dir = os.path.expanduser(path_override)
-        else:
-            self.base_dir = os.path.expanduser(os.path.join(base_dir, app))
-
-        if not os.path.isdir(self.base_dir):
-            os.makedirs(self.base_dir)
-
         self.filename = None
         self.full_path = None
 
-        for ext in VALID_EXT:
-            for _ext in [ext, ext.upper()]:
-                filename = '{}.{}'.format(name, _ext)
-                cfg = os.path.join(self.base_dir, filename)
-                if os.path.isfile(cfg):
-                    self.full_path = cfg
-                    self.filename = filename
-                    break
-
-        if self.filename is None:
-            self.filename = name + '.' + VALID_EXT[0]
-            self.full_path = os.path.join(self.base_dir, self.filename)
-            if template_file:
-                shutil.copyfile(template_file, self.full_path)
+        if file_override is not None:
+            self.full_path = file_override
+            if not os.path.isfile(self.full_path):
+                raise Exception('Unable to find specified file {}'.format(self.full_path))
+        else:
+            if path_override:
+                self.base_dir = os.path.expanduser(path_override)
             else:
-                with open(self.full_path, 'w') as f:
-                    if template:
-                        if isinstance(template, str):
-                            f.write(template)
-                        elif isinstance(template, dict):
-                            yaml.dump(template, f, default_flow_style=False)
-                    else:
-                        yaml.dump({}, f, default_flow_style=False)
+                self.base_dir = os.path.expanduser(os.path.join(base_dir, app))
+
+            if not os.path.isdir(self.base_dir):
+                os.makedirs(self.base_dir)
+
+            for ext in VALID_EXT:
+                for _ext in [ext, ext.upper()]:
+                    filename = '{}.{}'.format(name, _ext)
+                    cfg = os.path.join(self.base_dir, filename)
+                    if os.path.isfile(cfg):
+                        self.full_path = cfg
+                        self.filename = filename
+                        break
+
+            if self.filename is None:
+                self.filename = name + '.' + VALID_EXT[0]
+                self.full_path = os.path.join(self.base_dir, self.filename)
+                if template_file:
+                    shutil.copyfile(template_file, self.full_path)
+                else:
+                    with open(self.full_path, 'w') as f:
+                        if template:
+                            if isinstance(template, str):
+                                f.write(template)
+                            elif isinstance(template, dict):
+                                yaml.dump(template, f, default_flow_style=False)
+                        else:
+                            yaml.dump({}, f, default_flow_style=False)
 
         self._data = defaults
+        print(self.full_path)
         with open(self.full_path, 'r') as f:
             data = yaml.full_load(f)
             self._data.update(data)
