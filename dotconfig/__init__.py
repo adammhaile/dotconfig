@@ -78,7 +78,6 @@ class Config(object):
                             yaml.dump({}, f, default_flow_style=False)
 
         self._data = defaults
-        print(self.full_path)
         with open(self.full_path, 'r') as f:
             data = yaml.full_load(f)
             self._data.update(data)
