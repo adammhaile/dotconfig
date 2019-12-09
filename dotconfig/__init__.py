@@ -1,3 +1,4 @@
+# Copyright 2019 - Adam Haile <adammhaile@gmail.com>
 import yaml
 import os
 import shutil
