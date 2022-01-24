@@ -2,6 +2,7 @@
 import yaml
 import os
 import shutil
+import itertools
 
 
 VALID_EXT = [
@@ -54,7 +55,7 @@ class Config(object):
             if not os.path.isdir(self.base_dir):
                 os.makedirs(self.base_dir)
 
-            for ext in [ext for t in zip(VALID_EXT, [item.upper() for item in VALID_EXT]) for ext in t]:
+            for ext in itertools.chain(VALID_EXT, map(str.upper, VALID_EXT)):
                 filename = '{}.{}'.format(name, ext)
                 cfg = os.path.join(self.base_dir, filename)
                 if os.path.isfile(cfg):
